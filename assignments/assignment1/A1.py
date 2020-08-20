@@ -1,4 +1,4 @@
-from sklearn.naive_bayes import GaussianNB
+from sklearn import tree
 import pandas as pd
 
 if __name__ == "__main__":
@@ -9,9 +9,9 @@ if __name__ == "__main__":
     X = data_train[independent]
     Y = data_train["Species"]
     # Train model
-    clf = GaussianNB()
+    clf = tree.DecisionTreeClassifier()
     clf.fit(X,Y)
-    # Load testing data
+    # Load testing dataconda install scikit-learn
     data_test = pd.read_csv("../data/Iris_test.csv")
     X_test = data_test[independent]
     # Predict
