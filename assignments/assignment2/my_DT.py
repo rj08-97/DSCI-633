@@ -23,19 +23,20 @@ class my_DT:
         # Output impurity score
         stats = Counter(labels)
         N = float(len(labels))
-        impure = 0.0
         if self.criterion != "gini" and self.criterion != "entropy":
             raise Exception("Unknown Criterion.")
         if self.criterion == "gini":
+            impure = 0.0
             score = 0.0
             for i in stats:
                 p = stats[i]/N
-                score += p**2
-            impure += (1.0-score)
+                score = score + p**2
+            impure = impure + (1.0-score)
         if self.criterion == "entropy":
+            impure = 0.0
             for i in stats:
                 p = stats[i]/N
-                impure += (-1 * p * np.log10(p))
+                impure = impure + (-1 * p * np.log(p))
 
 
         return impure
@@ -57,12 +58,13 @@ class my_DT:
         best_feature = None
         best_feature_to_split = None
         best_splitting_value = None
-        weighted_impurity_score_left_node = None
-        weighted_impurity_score_right_node = None
+        weighted_impurity_score_left_node = 0
+        weighted_impurity_score_right_node = 0
         bestind = None
         bestvalue = None
-        bestscore = 10000
+        bestscore = 1000
         bestdata = None
+
         for feature in X.keys():
             cans = np.array(X[feature][pop])
             for can in cans:
@@ -71,7 +73,7 @@ class my_DT:
                 left_indicies = list()
                 right_indicies = list()
                 for index in range(0, cans.size):
-                    if cans[index] < can:
+                    if cans[index] <= can:
                         leftnode.append(labels[index])
                         left_indicies.append(index)
                     else:
@@ -84,7 +86,7 @@ class my_DT:
                 impure = weighted_impurity_score_left_node + weighted_impurity_score_right_node
 
 
-                if impure < bestscore:
+                if impure <  bestscore:
                     best_feature_to_split = feature
                     bestscore = impure
                     best_splitting_value = can

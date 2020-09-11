@@ -9,7 +9,7 @@ if __name__ == "__main__":
     X = data_train[independent]
     Y = data_train["Species"]
     # Train model
-    clf = DecisionTreeClassifier()
+    clf = DecisionTreeClassifier(max_depth=8, min_impurity_decrease=0, min_samples_split=2)
     clf.fit(X,Y)
     # Load testing dataconda install scikit-learn
     data_test = pd.read_csv("../data/Iris_test.csv")
