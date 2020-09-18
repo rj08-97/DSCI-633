@@ -44,7 +44,8 @@ class my_KNN:
         mapped_labels = [(distance, label) for distance, label in zip(distances, labels)]
         mapped_labels.sort(key=lambda x: x[0])
 
-        return Counter(map(lambda element: element[1], mapped_labels[:self.n_neighbors]))
+        output = Counter(map(lambda element: element[1], mapped_labels[:self.n_neighbors]))
+        return output
 
     def predict(self, X):
         # X: pd.DataFrame, independent variables, float
