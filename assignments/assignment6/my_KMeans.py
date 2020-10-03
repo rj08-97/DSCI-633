@@ -6,7 +6,7 @@ import math
 
 class my_KMeans:
 
-    def __init__(self, n_clusters=8, init="k-means++", n_init=10, max_iter=300, tol=1e-4):
+    def __init__(self, n_clusters=8, init="random", n_init=10, max_iter=300, tol=1e-4):
         # init = {"k-means++", "random"}
         # stop when either # iteration is greater than max_iter or the delta of self.inertia_ is smaller than tol.
         # repeat n_init times and keep the best run (cluster_centers_, inertia_) with the lowest inertia_.
@@ -29,17 +29,22 @@ class my_KMeans:
         # Initiate cluster centers
         # Input X is numpy.array
         # Output cluster_centers (list)
-        cluster_centers = []
         if self.init == "random":
-            cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=False)]
+            np.random.seed(999)
+
+            for key in range(0,self.n_clusters):
+                cluster_centers = X[np.random.choice(X.shape[key-1], size=self.n_clusters, replace=False)]
 
 
         elif self.init == "k-means++":
-            for key in range(1, self.n_clusters):
-                cluster_centers = [random.choices(X)]
+            np.random.seed(999)
+            for key in range(0, self.n_clusters):
+                cluster_centers = X[np.random.choice(X.shape[key-1], size=1, replace=False)]
                 squared_distance = np.array([np.min([np.square(self.dist(center, value)) for center in cluster_centers]) for value in X])
-                probility_distance = squared_distance/np.sum(squared_distance)
-                cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=True, p=probility_distance),:]
+                probility_distance = squared_distance/np.sum(squared_distance,axis=0)
+                cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=True, p=probility_distance)]
+
+
 
         else:
             raise Exception("Unknown value of self.init.")
@@ -62,7 +67,7 @@ class my_KMeans:
                 # calculate distances between x and each cluster center
                 dists = [self.dist(x, center) for center in cluster_centers]
                 # calculate inertia
-                mindist = np.argmin(dists) ** 2
+                mindist = np.min(np.square(dists))
                 inertia += (mindist)
                 # find the cluster that x belongs to
                 cluster_id = np.argmin(dists)
@@ -70,10 +75,10 @@ class my_KMeans:
                 clusters[cluster_id].append(x)
 
             if (last_inertia and last_inertia - inertia < self.tol) or i == self.max_iter:
-                for key in range(self.n_clusters):
-                    cluster_centers[key] = np.average(clusters[key])
-
                 break
+            for key in range(self.n_clusters):
+                cluster_centers[key] = np.average(clusters[key],axis=0)
+
             # Update cluster centers
 
             last_inertia = inertia
