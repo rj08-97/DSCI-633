@@ -40,15 +40,8 @@ class my_KMeans:
             for key in range(1, self.n_clusters):
                 squared_distance = np.array([min([self.dist(center,value) for center in cluster_centers]) for value in X])
                 probility_distance = squared_distance/sum(squared_distance)
-                cumulative_probs = np.cumsum(probility_distance)
-                #cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=True, p=probility_distance)]
-                random_value = np.random.rand()
-                for jay, prob in enumerate(cumulative_probs):
-                    if random_value < prob:
-                        index = jay
-                        break
-
-                cluster_centers.append(X[index])
+                cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=True, p=probility_distance)]
+                
 
 
         else:
