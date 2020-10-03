@@ -35,14 +35,11 @@ class my_KMeans:
 
 
         elif self.init == "k-means++":
-            np.random.seed(42)
-            cluster_centers = [X[np.random.choice(X.shape[0], size=1, replace=False)]]
+            cluster_centers = [random.choices(X)]
             for key in range(1, self.n_clusters):
-                squared_distance = np.array([min([self.dist(center,value) for center in cluster_centers]) for value in X])
-                probility_distance = squared_distance/sum(squared_distance)
-                cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=True, p=probility_distance)]
-                
-
+                squared_distance = np.array([np.min([np.square(self.dist(center, value)) for center in cluster_centers]) for value in X])
+                probility_distance = squared_distance/np.sum(squared_distance)
+                cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=True, p=probility_distance),:]
 
         else:
             raise Exception("Unknown value of self.init.")
@@ -63,20 +60,21 @@ class my_KMeans:
             inertia = 0
             for x in X:
                 # calculate distances between x and each cluster center
-                dists = [self.dist(x, center) ** 2 for center in cluster_centers]
+                dists = [self.dist(x, center) for center in cluster_centers]
                 # calculate inertia
-                mindist= np.argmin(dists)
-                inertia += mindist
+                mindist = np.argmin(dists) ** 2
+                inertia += (mindist)
                 # find the cluster that x belongs to
                 cluster_id = np.argmin(dists)
                 # add x to that cluster
                 clusters[cluster_id].append(x)
 
             if (last_inertia and last_inertia - inertia < self.tol) or i == self.max_iter:
+                for key in range(self.n_clusters):
+                    cluster_centers[key] = np.average(clusters[key])
+
                 break
             # Update cluster centers
-            for key in range(self.n_clusters):
-                cluster_centers[key] = np.average(clusters[key])
 
             last_inertia = inertia
 
