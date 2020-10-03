@@ -35,8 +35,8 @@ class my_KMeans:
 
 
         elif self.init == "k-means++":
-            cluster_centers = [random.choices(X)]
             for key in range(1, self.n_clusters):
+                cluster_centers = [random.choices(X)]
                 squared_distance = np.array([np.min([np.square(self.dist(center, value)) for center in cluster_centers]) for value in X])
                 probility_distance = squared_distance/np.sum(squared_distance)
                 cluster_centers = X[np.random.choice(X.shape[0], size=self.n_clusters, replace=True, p=probility_distance),:]
