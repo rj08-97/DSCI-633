@@ -72,13 +72,17 @@ def stratified_sampling(y, ratio, replace = True):
     #             (ratio is the same across each class,
     #             samples for each class = int(np.ceil(ratio * # data in each class)) )
 
-    sample = []
+    samp = []
     if ratio<=0 or ratio>=1:
         raise Exception("ratio must be 0 < ratio < 1.")
     y_array = np.asarray(y)
     # Write your own code below
-    for value in range(0,len(y_array)):
-        data_each_class = (Counter(y_array))
-        size = int(np.ceil(ratio * data_each_class.values()))
-        sample.append(int(np.random.choice(len(y_array),size=size,replace=replace)))
+    setosa = [index for index, label in enumerate(y_array) if label == "Iris-setosa"]
+    vesicolor = [index for index, label in enumerate(y_array) if label == "Iris-versicolor"]
+    verginca = [index for index, label in enumerate(y_array) if label == "Iris-virginica"]
+    listed_together = [setosa,vesicolor,verginca]
+    for value in range(0, len(listed_together)):
+        size = int(np.ceil(ratio * len(listed_together[value])))
+        samp.append(np.random.choice(listed_together[value],size,replace=replace))
+        sample = np.concatenate((samp), axis=0)
     return sample
