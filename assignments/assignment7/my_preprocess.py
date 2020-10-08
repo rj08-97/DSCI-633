@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.linalg import svd
+from collections import Counter
 from copy import deepcopy
 from pdb import set_trace
 
@@ -71,11 +72,13 @@ def stratified_sampling(y, ratio, replace = True):
     #             (ratio is the same across each class,
     #             samples for each class = int(np.ceil(ratio * # data in each class)) )
 
-    sample = [] * len(y)
+    sample = []
     if ratio<=0 or ratio>=1:
         raise Exception("ratio must be 0 < ratio < 1.")
     y_array = np.asarray(y)
     # Write your own code below
     for value in range(0,len(y_array)):
-        sample.append(int(np.ceil(ratio * np.random.choice(len(y_array),replace=replace))))
+        data_each_class = (Counter(y_array))
+        size = int(np.ceil(ratio * data_each_class.values()))
+        sample.append(int(np.random.choice(len(y_array),size=size,replace=replace)))
     return sample
