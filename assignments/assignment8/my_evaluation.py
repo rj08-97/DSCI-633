@@ -27,20 +27,19 @@ class my_evaluation:
         correct = self.predictions == self.actuals
         self.acc = float(Counter(correct)[True])/len(correct)
         self.confusion_matrix = {}
-
         for label in self.classes_:
             tp = 0
             fp = 0
             fn = 0
             tn = 0
             for index in range(0,len(self.actuals)):
-                if self.actuals[index] == self.predictions[index] == label:
+                if label == self.actuals[index] == self.predictions[index]:
                     tp = tp + 1
                 if self.actuals[index] != self.predictions[index] == label:
                     fp = fp + 1
-                if self.actuals[index] == self.predictions[index] != label:
-                    tn = tn + 1
                 if self.actuals[index] != self.predictions[index] != label:
+                    tn = tn + 1
+                if label == self.actuals[index] != self.predictions[index]:
                     fn = fn + 1
             self.confusion_matrix[label] = {"TP":tp, "TN": tn, "FP": fp, "FN": fn}
         return
@@ -94,7 +93,6 @@ class my_evaluation:
         # average: {"macro", "micro", "weighted"}. If target==None, return average recall
         # output: recall = float
         # note: be careful for divided by 0
-
         if self.confusion_matrix==None:
             self.confusion()
         if target in self.classes_:
