@@ -90,9 +90,9 @@ class my_GA:
                 actuals = np.array(y_test)
                 objs = np.array(self.obj_func(predictions, actuals, pred_proba))
                 if type(objs_crossval) == type(None):
-                    objs_crossval = objs[fold]
+                    objs_crossval = objs * len(test_indices)
                 else:
-                    objs_crossval += objs
+                    objs_crossval += objs * len(test_indices)
 
             objs_crossval = objs_crossval / float(len(self.data_y))
             self.evaluated[decision] = objs_crossval
@@ -108,7 +108,7 @@ class my_GA:
         obj_a = self.evaluate(a)
         obj_b = self.evaluate(b)
         # write your own code below
-        if a > b:
+        if all(a) > all(b) and any(a) > any(a):
             return 1
         else:
             return -1
@@ -126,7 +126,7 @@ class my_GA:
         modified = False
         for i in range(len(pf_best)):
             for j in range(len(pf_new)):
-                if self.is_better(pf_new[j], pf_best[i]) == 1:
+                if self.is_better(pf_best[i],pf_new[j]) == 1:
                     pf_best[i] = pf_new[j]
                     pf_new.pop(j)
                     modified = True
@@ -135,7 +135,7 @@ class my_GA:
         for j in range(len(pf_new)):
             not_dominated = True
             for i in range(len(pf_best)):
-                if self.is_better(pf_best[i], pf_new[j]) == -1:
+                if self.is_better(pf_best[i], pf_new[j]) != -1:
                     not_dominated = False
                     break
             if not_dominated:
@@ -190,7 +190,7 @@ class my_GA:
         def cross(a, b):
             new_point = []
             for i in range(len(a)):
-                if np.random.choice(a) == a:
+                if np.random.randint(2)==0:
                     new_point.append(a[i])
                 else:
                     new_point.append(b[i])
