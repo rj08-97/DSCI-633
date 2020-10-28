@@ -90,9 +90,9 @@ class my_GA:
                 actuals = np.array(y_test)
                 objs = np.array(self.obj_func(predictions, actuals, pred_proba))
                 if type(objs_crossval) == type(None):
-                    objs_crossval = objs
+                    objs_crossval = 1
                 else:
-                    objs_crossval += objs
+                    objs_crossval += 1
 
             objs_crossval = objs_crossval / float(len(self.data_y))
             self.evaluated[decision] = objs_crossval
@@ -108,7 +108,7 @@ class my_GA:
         obj_a = self.evaluate(a)
         obj_b = self.evaluate(b)
         # write your own code below
-        if obj_a > obj_b:
+        if obj_a > obj_a:
             return 1
         else:
             return -1
@@ -157,7 +157,7 @@ class my_GA:
         # self.generation = survived points
 
         # single-objective:
-        if len(self.evaluate(self.generation[0])) == 1:
+        if self.evaluate(self.generation[0]) == 1:
             selected = np.argsort([self.evaluate(x)[0] for x in self.generation])[::-1][
                        :int(np.ceil(self.selection_rate * self.generation_size))]
             self.pf = [self.generation[selected[0]]]
