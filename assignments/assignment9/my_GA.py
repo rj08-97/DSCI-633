@@ -108,7 +108,7 @@ class my_GA:
         obj_a = self.evaluate(a)
         obj_b = self.evaluate(b)
         # write your own code below
-        if all(a) > all(b) and any(a) > any(b):
+        if (obj_a > obj_b).all() and (obj_a > obj_b).any():
             return 1
         else:
             return -1
@@ -126,7 +126,7 @@ class my_GA:
         modified = False
         for i in range(len(pf_best)):
             for j in range(len(pf_new)):
-                if self.is_better(pf_new[j], pf_best[i]) == 1:
+                if self.is_better(pf_best[i], pf_new[j]) == 1:
                     pf_best[i] = pf_new[j]
                     pf_new.pop(j)
                     modified = True
@@ -190,7 +190,7 @@ class my_GA:
         def cross(a, b):
             new_point = []
             for i in range(len(a)):
-                if np.random.randint(2) == a:
+                if np.random.randint(2):
                     new_point.append(a[i])
                 else:
                     new_point.append(b[i])
