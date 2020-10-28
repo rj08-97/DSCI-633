@@ -92,7 +92,7 @@ class my_GA:
                 if type(objs_crossval) == type(None):
                     objs_crossval = objs * len(test_indices)
                 else:
-                    objs_crossval += objs * len(test_indices)
+                    objs_crossval += objs
 
             objs_crossval = objs_crossval / float(len(self.data_y))
             self.evaluated[decision] = objs_crossval
@@ -108,7 +108,7 @@ class my_GA:
         obj_a = self.evaluate(a)
         obj_b = self.evaluate(b)
         # write your own code below
-        if all(a) > all(b) and any(a) > any(a):
+        if all(a) > all(b) and any(a) > any(b):
             return 1
         else:
             return -1
@@ -126,7 +126,7 @@ class my_GA:
         modified = False
         for i in range(len(pf_best)):
             for j in range(len(pf_new)):
-                if self.is_better(pf_best[i],pf_new[j]) == 1:
+                if self.is_better(pf_new[j], pf_best[i]) == 1:
                     pf_best[i] = pf_new[j]
                     pf_new.pop(j)
                     modified = True
@@ -190,7 +190,7 @@ class my_GA:
         def cross(a, b):
             new_point = []
             for i in range(len(a)):
-                if np.random.randint(2)==0:
+                if np.random.randint(2) == a:
                     new_point.append(a[i])
                 else:
                     new_point.append(b[i])
