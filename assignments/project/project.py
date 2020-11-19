@@ -4,8 +4,6 @@ import time
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import PassiveAggressiveClassifier
 
-from assignment8.my_evaluation import my_evaluation
-
 
 class my_model():
     def __init__(self):
@@ -25,7 +23,6 @@ class my_model():
         X_final = TfidfTransformer(norm='l2', use_idf=False, smooth_idf=False, sublinear_tf=True).transform(XX)
         predictionsOfModel = self.clf.predict(X_final)
         return predictionsOfModel
-
 
 if __name__ == "__main__":
     start = time.time()
