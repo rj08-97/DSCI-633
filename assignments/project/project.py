@@ -8,7 +8,7 @@ from sklearn.linear_model import PassiveAggressiveClassifier
 class my_model():
     def __init__(self):
         self.preprocessor = CountVectorizer(stop_words='english')
-        self.clf = PassiveAggressiveClassifier(C=1.0, fit_intercept=True, n_iter_no_change=10, validation_fraction=0.8)
+        self.clf = PassiveAggressiveClassifier(C=1, fit_intercept=True, n_iter_no_change=20, validation_fraction=0.8)
 
     def fit(self, X, y):
         # do not exceed 29 mins
