@@ -3,13 +3,12 @@ import time
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import PassiveAggressiveClassifier
-from sklearn import preprocessing
 
 
 class my_model():
     def __init__(self):
-        self.preprocessor = CountVectorizer(stop_words='english', strip_accents="unicode")
-        self.clf = PassiveAggressiveClassifier(C=0.1, fit_intercept=True, n_iter_no_change=20, validation_fraction=0.8)
+        self.preprocessor = CountVectorizer(stop_words='english')
+        self.clf = PassiveAggressiveClassifier(C=1.0, fit_intercept=True, n_iter_no_change=10, validation_fraction=0.8)
 
     def fit(self, X, y):
         # do not exceed 29 mins
